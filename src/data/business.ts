@@ -18,8 +18,8 @@ export const business = {
   schemaType: 'TravelAgency',
   ctaLabel: 'Pesan Kursi via WA',
   ctaUrl: 'https://wa.me/6282186578514',
-  title: 'Yossy Mandiri Travel Jambi — Hiace, Innova, Fortuner',
-  description: 'PT Yossy Mandiri Travel loket Jambi: Hiace Premio, Commuter, Innova Reborn, Fortuner, executive via tol. Lampung–Jambi & Palembang–Jambi Rp430rb.',
+  title: 'Travel Jambi–Palembang–Jakarta via Tol | Yossy Mandiri Executive',
+  description: 'Yossy Mandiri Travel Jambi: Hiace Premio captain seat, Innova Reborn, Fortuner executive via tol Sumatera. Lampung–Jambi & Palembang–Jambi Rp430rb, antar-jemput lokasi.',
   canonicalPath: '/',
   ogImage: '/images/yossy-armada-7.jpg',
 };
@@ -46,10 +46,14 @@ export const routes = [
 ];
 
 export const fleet = [
-  { name: 'Hiace Premio', desc: 'Kabin luas dengan jok captain seat kulit, TV, dan karaoke.', img: 'premio' },
-  { name: 'Hiace Commuter', desc: 'Kapasitas rombongan, cocok untuk carter dan paket travel.', img: 'hiace' },
-  { name: 'Innova Reborn', desc: 'MPV nyaman untuk rute jauh dengan suspensi empuk.', img: 'innova1' },
-  { name: 'Kabin Hiburan', desc: 'Unit Premio dengan TV dan karaoke untuk mengusir bosan selama perjalanan jauh.', img: 'kabin' },
+  { name: 'Hiace Premio', desc: 'Kabin luas dengan jok captain seat kulit, TV, dan karaoke.', img: 'yossy-armada-6.jpg', w: 767, h: 776 },
+  { name: 'Hiace Commuter', desc: 'Kapasitas rombongan, cocok untuk carter dan paket travel.', img: 'yossy-armada-2.jpg', w: 1074, h: 604 },
+  { name: 'Innova Reborn', desc: 'MPV nyaman untuk rute jauh dengan suspensi empuk.', img: 'yossy-armada-1.jpg', w: 900, h: 1200 },
+  { name: 'Innova Reborn — unit 2', desc: 'Unit Innova cadangan untuk rute Jambi–Jakarta dan Jambi–Padang.', img: 'yossy-armada-3.jpg', w: 550, h: 1193 },
+  { name: 'Kabin Hiburan', desc: 'Unit Premio dengan TV dan karaoke untuk mengusir bosan selama perjalanan jauh.', img: 'yossy-armada-5.jpg', w: 1093, h: 1103 },
+  { name: 'Armada Executive', desc: 'Unit executive class via tol, terawat dan bersih untuk rute Sumatera.', img: 'yossy-armada-4.jpg', w: 900, h: 900 },
+  { name: 'Hiace Premio Silver', desc: 'Unit silver terparkir di depan loket Simpang Kawat Jambi.', img: 'yossy-armada-7.jpg', w: 648, h: 864 },
+  { name: 'Promo Rute', desc: 'Poster promosi rute Lampung–Bekasi (pp) dan rute Sumatera lainnya.', img: 'yossy-promo-1.jpg', w: 900, h: 900 },
 ];
 
 export const faqs = [
