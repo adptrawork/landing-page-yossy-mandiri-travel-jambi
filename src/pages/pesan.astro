@@ -1,52 +1,99 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import StepsPesan from '../components/StepsPesan.astro';
 import { business, routes } from '../data/business';
 ---
+<!-- Ref: FlowLab booking — form validasi + error per kolom, tombol 48px -->
 <BaseLayout title={`Pesan kursi executive via tol — ${business.name}`} description="Form pesan kursi Yossy Mandiri Jambi: pilih rute tol Sumatera, tanggal, jumlah kursi — terkirim rapi via WhatsApp loket." canonicalPath="/pesan" image={business.ogImage} breadcrumbs={[{ name: 'Pesan Kursi', path: '/pesan' }]}>
-  <section class="max-w-6xl mx-auto px-4 pt-12 w-full">
+  <section class="max-w-7xl mx-auto px-4 pt-12 md:pt-20 w-full">
     <p class="text-xs font-semibold uppercase tracking-widest text-blue-900">Pesan Kursi</p>
     <h1 class="mt-2 text-4xl md:text-6xl tracking-tight leading-none font-bold max-w-[22ch]">Isi 30 detik, kursi terkunci</h1>
   </section>
-  <section class="max-w-6xl mx-auto px-4 py-10 w-full">
+  <section class="max-w-7xl mx-auto px-4 py-10 md:py-12 w-full">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-      <form id="book" class="md:col-span-7 reveal bg-white border border-blue-900/15 rounded-[2rem] p-8">
+      <form id="book" novalidate class="md:col-span-7 reveal bg-white border border-blue-900/15 rounded-[2rem] p-6 md:p-8">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-          <label class="flex flex-col gap-1.5 font-medium">Nama<input required name="nama" placeholder="Nama penumpang" class="font-normal border border-zinc-300 rounded-2xl px-4 py-3 focus:border-blue-900 focus:outline-none" /></label>
-          <label class="flex flex-col gap-1.5 font-medium">No. WA<input required name="nowa" placeholder="08xx" class="font-normal border border-zinc-300 rounded-2xl px-4 py-3 focus:border-blue-900 focus:outline-none" /></label>
-          <label class="flex flex-col gap-1.5 font-medium">Rute<select required name="rute" class="font-normal border border-zinc-300 rounded-2xl px-4 py-3 focus:border-blue-900 focus:outline-none">
-            {routes.map((r) => (<option value={r.name}>{r.name} — {r.price}</option>))}
-          </select></label>
-          <label class="flex flex-col gap-1.5 font-medium">Tanggal berangkat<input required name="tanggal" type="date" class="font-normal border border-zinc-300 rounded-2xl px-4 py-3 focus:border-blue-900 focus:outline-none" /></label>
-          <label class="flex flex-col gap-1.5 font-medium">Jumlah kursi<input required name="jumlah" type="number" min="1" value="1" class="font-normal border border-zinc-300 rounded-2xl px-4 py-3 focus:border-blue-900 focus:outline-none" /></label>
+          <div class="flex flex-col gap-1.5">
+            <label for="f-nama" class="font-medium">Nama penumpang</label>
+            <input id="f-nama" name="nama" placeholder="Nama penumpang" autocomplete="name" class="field font-normal border border-zinc-300 rounded-2xl px-4 py-3 focus:border-blue-900 focus:outline-none" aria-describedby="e-nama" />
+            <p id="e-nama" class="hidden text-xs text-red-700">Isi nama penumpang.</p>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="f-nowa" class="font-medium">No. WA aktif</label>
+            <input id="f-nowa" name="nowa" inputmode="tel" placeholder="08xx" autocomplete="tel" class="field font-normal border border-zinc-300 rounded-2xl px-4 py-3 focus:border-blue-900 focus:outline-none" aria-describedby="e-nowa" />
+            <p id="e-nowa" class="hidden text-xs text-red-700">Isi no. WA diawali 08, minimal 9 digit.</p>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="f-rute" class="font-medium">Rute</label>
+            <select id="f-rute" name="rute" class="field font-normal border border-zinc-300 rounded-2xl px-4 py-3 focus:border-blue-900 focus:outline-none" aria-describedby="e-rute">
+              <option value="">— Pilih rute —</option>
+              {routes.map((r) => (<option value={r.name}>{r.name} — {r.price}</option>))}
+            </select>
+            <p id="e-rute" class="hidden text-xs text-red-700">Pilih salah satu rute.</p>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="f-tanggal" class="font-medium">Tanggal berangkat</label>
+            <input id="f-tanggal" name="tanggal" type="date" class="field font-normal border border-zinc-300 rounded-2xl px-4 py-3 focus:border-blue-900 focus:outline-none" aria-describedby="e-tanggal" />
+            <p id="e-tanggal" class="hidden text-xs text-red-700">Pilih tanggal hari ini atau sesudahnya.</p>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="f-jumlah" class="font-medium">Jumlah kursi</label>
+            <input id="f-jumlah" name="jumlah" type="number" min="1" max="30" value="1" class="field font-normal border border-zinc-300 rounded-2xl px-4 py-3 focus:border-blue-900 focus:outline-none" aria-describedby="e-jumlah" />
+            <p id="e-jumlah" class="hidden text-xs text-red-700">Jumlah kursi 1–30.</p>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label for="f-jemput" class="font-medium">Titik jemput <span class="text-zinc-400 font-normal">(opsional)</span></label>
+            <input id="f-jemput" name="jemput" placeholder="cth: Simpang Kawat / alamat" class="field font-normal border border-zinc-300 rounded-2xl px-4 py-3 focus:border-blue-900 focus:outline-none" />
+          </div>
         </div>
-        <p id="book-err" class="hidden mt-3 text-sm text-red-700">Lengkapi semua kolom dan pilih tanggal hari ini atau sesudahnya.</p>
-        <button type="submit" class="mt-6 bg-blue-900 text-white px-7 py-3.5 rounded-full text-sm font-medium transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Kirim pesanan via WA</button>
+        <p id="book-err" role="alert" class="hidden mt-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-2xl px-4 py-3">Ada kolom belum valid — periksa pesan merah di tiap kolom.</p>
+        <button type="submit" class="mt-6 w-full sm:w-auto bg-blue-900 text-white px-7 py-3.5 rounded-full text-sm font-medium min-h-[48px] transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Kirim pesanan via WA</button>
       </form>
-      <script>
-        const form = document.getElementById('book') as HTMLFormElement | null;
-        form?.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const fd = new FormData(form);
-          const tgl = String(fd.get('tanggal') || '');
-          const today = new Date().toISOString().slice(0, 10);
-          const err = document.getElementById('book-err');
-          if (!fd.get('nama') || !fd.get('nowa') || !fd.get('rute') || !tgl || !fd.get('jumlah') || tgl < today) {
-            err?.classList.remove('hidden');
-            return;
-          }
-          err?.classList.add('hidden');
-          const msg = `Halo PT Yossy Mandiri Travel, saya mau pesan kursi. Rute: ${fd.get('rute')}, tanggal ${tgl}, ${fd.get('jumlah')} kursi. Nama: ${fd.get('nama')}, WA: ${fd.get('nowa')}. Apakah tersedia?`;
-          window.open(`https://wa.me/6282186578514?text=${encodeURIComponent(msg)}`, '_blank');
+      <script is:inline>
+        document.addEventListener('DOMContentLoaded', () => {
+          const form = document.getElementById('book');
+          const setErr = (id, bad) => {
+            document.getElementById(id)?.classList.toggle('hidden', !bad);
+            const input = document.querySelector(`[aria-describedby="${id}"]`);
+            input?.classList.toggle('field-error', bad);
+          };
+          form?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fd = new FormData(form);
+            const nama = String(fd.get('nama') || '').trim();
+            const nowa = String(fd.get('nowa') || '').replace(/[\s-]/g, '');
+            const rute = String(fd.get('rute') || '');
+            const tgl = String(fd.get('tanggal') || '');
+            const jumlah = Number(fd.get('jumlah') || 0);
+            const jemput = String(fd.get('jemput') || '').trim();
+            const today = new Date().toISOString().slice(0, 10);
+            const badNama = nama.length < 2;
+            const badNowa = !/^08\d{7,14}$/.test(nowa);
+            const badRute = !rute;
+            const badTgl = !tgl || tgl < today;
+            const badJumlah = !(jumlah >= 1 && jumlah <= 30);
+            setErr('e-nama', badNama); setErr('e-nowa', badNowa); setErr('e-rute', badRute);
+            setErr('e-tanggal', badTgl); setErr('e-jumlah', badJumlah);
+            const anyBad = badNama || badNowa || badRute || badTgl || badJumlah;
+            document.getElementById('book-err')?.classList.toggle('hidden', !anyBad);
+            if (anyBad) return;
+            const msg = `Halo PT Yossy Mandiri Travel, saya mau pesan kursi. Rute: ${rute}, tanggal ${tgl}, ${jumlah} kursi. Nama: ${nama}, WA: ${nowa}${jemput ? `, jemput di: ${jemput}` : ''}. Apakah tersedia?`;
+            window.open(`https://wa.me/6282186578514?text=${encodeURIComponent(msg)}`, '_blank');
+          });
         });
       </script>
       <div class="md:col-span-5 reveal reveal-d1">
-        <ol class="bg-blue-900 text-white rounded-[2rem] p-8 h-full list-none space-y-4 text-sm">
-          <li class="flex gap-3"><span class="font-mono-num font-semibold text-blue-200">01</span> Isi form dengan data valid.</li>
-          <li class="flex gap-3"><span class="font-mono-num font-semibold text-blue-200">02</span> Pesan terkirim rapi ke WA loket.</li>
-          <li class="flex gap-3"><span class="font-mono-num font-semibold text-blue-200">03</span> Admin konfirmasi kursi + instruksi bayar.</li>
-          <li class="flex gap-3"><span class="font-mono-num font-semibold text-blue-200">04</span> Simpan bukti bayar, datang tepat waktu.</li>
-        </ol>
+        <div class="bg-blue-900 text-white rounded-[2rem] p-8 h-full">
+          <h2 class="font-semibold text-lg tracking-tight">Alur pesan 4 langkah</h2>
+          <ol class="mt-4 list-none space-y-4 text-sm">
+            <li class="flex gap-3"><span class="font-mono-num font-semibold text-blue-200">01</span> Pilih rute di tabel jadwal.</li>
+            <li class="flex gap-3"><span class="font-mono-num font-semibold text-blue-200">02</span> Isi form dengan data valid.</li>
+            <li class="flex gap-3"><span class="font-mono-num font-semibold text-blue-200">03</span> Admin konfirmasi kursi + bayar.</li>
+            <li class="flex gap-3"><span class="font-mono-num font-semibold text-blue-200">04</span> Tiba H−30 menit di titik jemput.</li>
+          </ol>
+        </div>
       </div>
     </div>
+    <div class="mt-8"><StepsPesan /></div>
   </section>
 </BaseLayout>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
+/* Fonts dimuat via <link> di BaseHead (preconnect + display=swap), bukan @import — anti render-blocking */
 
 @tailwind base;
 @tailwind components;
@@ -77,5 +77,38 @@ body {
   .route-draw, .route-draw-2 { animation: none; stroke-dashoffset: 0; }
   .route-dot { opacity: 1; animation: none; }
   .route-pulse { animation: none; }
+  .skeleton { animation: none; }
   html { scroll-behavior: auto; }
 }
+
+/* FAQ accordion: grid-rows animation, transform/opacity only */
+details.faq > summary { list-style: none; }
+details.faq > summary::-webkit-details-marker { display: none; }
+details.faq .faq-body {
+  display: grid; grid-template-rows: 0fr; opacity: 0;
+  transition: grid-template-rows 0.45s var(--ease-premium), opacity 0.45s var(--ease-premium);
+}
+details.faq[open] .faq-body { grid-template-rows: 1fr; opacity: 1; }
+
+/* Skeleton shimmer untuk tabel jadwal / kartu rute */
+.skeleton {
+  position: relative; overflow: hidden;
+  background: #e4e9f4; border-radius: 1rem; min-height: 88px;
+}
+.skeleton::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 45%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.75), transparent);
+  transform: translateX(-140%) skewX(-12deg);
+  animation: sksweep 1.4s var(--ease-premium) infinite;
+}
+@keyframes sksweep {
+  to { transform: translateX(320%) skewX(-12deg); }
+}
+
+/* Form 48px + error */
+.field { min-height: 48px; }
+.field-error { border-color: #b91c1c !important; }
+
+/* Scroll-x hint untuk tabel jadwal */
+.scroll-hint { scrollbar-width: thin; }
+.sticky-col { position: sticky; left: 0; z-index: 5; }

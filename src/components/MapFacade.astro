@@ -1,0 +1,28 @@
+---
+/* MapFacade: preview + tombol — iframe Maps disuntik hanya saat diklik (hemat ~500KB awal) */
+interface Props { src: string; title: string; address: string; mapsUrl: string }
+const { src, title, address, mapsUrl } = Astro.props;
+---
+<div class="map-facade rounded-[2rem] overflow-hidden border border-blue-900/15 bg-blue-900/[0.04]" data-src={src} data-title={title}>
+  <div class="map-preview p-8 md:p-10 text-center">
+    <p class="font-mono-num text-xs font-semibold uppercase tracking-widest text-blue-900">Peta lokasi</p>
+    <p class="mt-2 text-sm text-zinc-600 max-w-[55ch] mx-auto">{address}</p>
+    <button type="button" class="map-load mt-5 bg-blue-900 text-white px-7 py-3 rounded-full text-sm font-semibold min-h-[48px] transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Muat peta interaktif</button>
+    <p class="mt-3 text-xs text-zinc-400"><a href={mapsUrl} target="_blank" rel="noopener" class="underline underline-offset-4">atau buka di Google Maps</a></p>
+  </div>
+</div>
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.map-facade').forEach((box) => {
+      const btn = box.querySelector('.map-load');
+      btn?.addEventListener('click', () => {
+        const src = box.getAttribute('data-src') || '';
+        const title = box.getAttribute('data-title') || 'Peta lokasi';
+        const frame = document.createElement('iframe');
+        frame.src = src; frame.title = title; frame.loading = 'lazy';
+        frame.className = 'w-full max-w-full h-[320px]';
+        box.replaceChildren(frame);
+      }, { once: true });
+    });
+  });
+</script>

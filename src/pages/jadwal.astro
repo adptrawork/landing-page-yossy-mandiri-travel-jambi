@@ -1,40 +1,65 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { business, routes } from '../data/business';
+const routesJson = JSON.stringify(routes);
 const badgeCls = (s: string) =>
   s.includes('Terverifikasi') ? 'bg-blue-900 text-white' : 'bg-amber-100 text-amber-800';
 ---
+<!-- Ref: Shakuro Umrah&Hajj tour — tabel paket + filter; mobile = cards -->
 <BaseLayout title={`Jadwal & tarif executive via tol — ${business.name}`} description="Jadwal dan tarif Yossy Mandiri Jambi: Lampung–Jambi dan Palembang–Jambi Rp430rb executive via tol, rute Jambi–Jakarta, Pekanbaru, Padang." canonicalPath="/jadwal" image={business.ogImage} breadcrumbs={[{ name: 'Jadwal & Tarif', path: '/jadwal' }]}>
-  <section class="max-w-6xl mx-auto px-4 pt-12 w-full">
+  <section class="max-w-7xl mx-auto px-4 pt-12 md:pt-20 w-full">
     <p class="text-xs font-semibold uppercase tracking-widest text-blue-900">Jadwal & Tarif</p>
     <h1 class="mt-2 text-4xl md:text-6xl tracking-tight leading-none font-bold max-w-[22ch]">Tarif tol Sumatera, baris per baris</h1>
     <p class="mt-4 text-base text-zinc-600 max-w-[65ch]">Label navy berarti tarif terverifikasi dari <a class="underline underline-offset-4 text-blue-900" href="https://yossymandiritravel.com/tarif/" target="_blank" rel="noopener">halaman tarif resmi</a>. Konfirmasi kursi via WA sebelum transfer.</p>
+    <div class="mt-6 max-w-md">
+      <label for="route-filter" class="text-sm font-medium">Filter rute</label>
+      <input id="route-filter" type="search" placeholder="cth: Palembang, Jakarta…" autocomplete="off" class="field mt-1.5 w-full border border-zinc-300 rounded-2xl px-4 py-3 text-sm focus:border-blue-900 focus:outline-none" />
+    </div>
   </section>
-  <section class="max-w-6xl mx-auto px-4 py-10 w-full">
-    <div class="reveal bg-white border border-blue-900/15 rounded-[2rem] overflow-hidden">
-      <div class="overflow-x-auto max-h-[70dvh] overflow-y-auto">
-        <table class="w-full text-sm min-w-[640px]">
-          <thead class="sticky top-0 z-10 bg-blue-900 text-white">
-            <tr class="text-left">
-              <th class="py-3.5 px-5 font-semibold">Rute</th><th class="py-3.5 px-5 font-semibold">Harga</th>
-              <th class="py-3.5 px-5 font-semibold">Status</th><th class="py-3.5 px-5 font-semibold">Keterangan</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-blue-900/10">
-            {routes.map((r, i) => (
-              <tr class:list={['transition hover:bg-blue-900/5', i % 2 === 1 && 'bg-slate-100/80']}>
-                <td class="py-4 px-5 font-semibold">{r.name}</td>
-                <td class="py-4 px-5 font-mono-num font-semibold whitespace-nowrap text-blue-900">{r.price}</td>
-                <td class="py-4 px-5"><span class={`text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap ${badgeCls(r.status)}`}>{r.status}</span></td>
-                <td class="py-4 px-5 text-zinc-600">{r.desc}</td>
+  <section class="max-w-7xl mx-auto px-4 py-10 md:py-12 w-full">
+    <div id="jadwal-skeleton" class="grid grid-cols-1 gap-4" aria-hidden="true">
+      <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+    </div>
+    <p id="jadwal-empty" class="hidden text-sm text-zinc-500 bg-white border border-blue-900/15 rounded-[1.5rem] p-6">Tidak ada rute yang cocok — coba kata kunci lain atau <a class="underline text-blue-900" href="/pesan">tanya via WA</a>.</p>
+    <!-- Desktop: tabel + sticky kolom pertama + hint scroll -->
+    <div id="jadwal-table-wrap" class="hidden">
+      <p class="md:hidden text-xs text-zinc-500 mb-2">← Geser tabel ke samping — kolom rute menempel</p>
+      <div class="hidden md:block bg-white border border-blue-900/15 rounded-[2rem] overflow-hidden">
+        <div class="scroll-hint overflow-x-auto max-h-[70dvh] overflow-y-auto">
+          <table class="w-full text-sm min-w-[720px]">
+            <thead class="sticky top-0 z-10 bg-blue-900 text-white">
+              <tr class="text-left">
+                <th scope="col" class="sticky-col bg-blue-900 py-3.5 px-5 font-semibold">Rute</th><th scope="col" class="py-3.5 px-5 font-semibold">Harga</th>
+                <th scope="col" class="py-3.5 px-5 font-semibold">Status</th><th scope="col" class="py-3.5 px-5 font-semibold">Keterangan</th><th scope="col" class="py-3.5 px-5 font-semibold"><span class="sr-only">Aksi</span></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody id="jadwal-tbody" class="divide-y divide-blue-900/10"></tbody>
+          </table>
+        </div>
       </div>
+      <!-- Mobile: cards -->
+      <div id="jadwal-cards" class="mt-4 grid grid-cols-1 gap-4 md:hidden"></div>
     </div>
     <div class="mt-10">
-      <a href="/pesan" class="inline-block bg-blue-900 text-white px-8 py-3.5 rounded-full font-medium transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Pesan kursi sekarang</a>
+      <a href="/pesan" class="inline-flex items-center bg-blue-900 text-white px-8 py-3.5 rounded-full font-medium min-h-[48px] transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Pesan kursi sekarang</a>
     </div>
   </section>
+  <script id="jadwal-data" type="application/json" set:html={routesJson} />
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const routes = JSON.parse(document.getElementById('jadwal-data')?.textContent || '[]');
+      const badge = (s) => s.includes('Terverifikasi') ? 'bg-blue-900 text-white' : 'bg-amber-100 text-amber-800';
+      const wa = (n) => `https://wa.me/6282186578514?text=${encodeURIComponent('Halo, saya mau pesan kursi ' + n + '. Apakah tersedia?')}`;
+      const tbody = document.getElementById('jadwal-tbody');
+      const cards = document.getElementById('jadwal-cards');
+      const render = (q) => {
+        const list = routes.filter((r) => r.name.toLowerCase().includes(q.toLowerCase()));
+        if (tbody) tbody.innerHTML = list.map((r, i) => `<tr class="${i % 2 ? 'bg-slate-100/80' : ''}"><td class="sticky-col ${i % 2 ? '!bg-slate-100 bg-white' : 'bg-white'} py-4 px-5 font-semibold">${r.name}</td><td class="py-4 px-5 font-mono-num font-semibold whitespace-nowrap text-blue-900">${r.price}</td><td class="py-4 px-5"><span class="text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap ${badge(r.status)}">${r.status}</span></td><td class="py-4 px-5 text-zinc-600">${r.desc}</td><td class="py-4 px-5 text-right"><a href="${wa(r.name)}" target="_blank" rel="noopener" class="inline-block bg-blue-900 text-white px-5 py-2 rounded-full text-xs font-semibold whitespace-nowrap">Pesan</a></td></tr>`).join('');
+        if (cards) cards.innerHTML = list.map((r, i) => `<article class="bg-white border border-blue-900/15 rounded-[1.5rem] p-6"><div class="flex items-center justify-between gap-3"><span class="font-mono-num text-xs font-semibold text-blue-900">RUTE 0${i + 1}</span><span class="text-xs font-medium px-3 py-1 rounded-full whitespace-nowrap ${badge(r.status)}">${r.status}</span></div><h2 class="mt-2 font-bold text-lg">${r.name}</h2><p class="mt-1 font-mono-num font-semibold text-blue-900">${r.price}</p><p class="mt-1 text-sm text-zinc-600">${r.desc}</p><a href="${wa(r.name)}" target="_blank" rel="noopener" class="mt-4 grid place-items-center bg-blue-900 text-white px-6 py-3 rounded-full text-sm font-semibold min-h-[48px]">Pesan kursi</a></article>`).join('');
+        document.getElementById('jadwal-empty')?.classList.toggle('hidden', list.length > 0);
+      };
+      setTimeout(() => { document.getElementById('jadwal-skeleton')?.remove(); document.getElementById('jadwal-table-wrap')?.classList.remove('hidden'); render(''); }, 450);
+      document.getElementById('route-filter')?.addEventListener('input', (e) => render(e.target.value ?? ''));
+    });
+  </script>
 </BaseLayout>

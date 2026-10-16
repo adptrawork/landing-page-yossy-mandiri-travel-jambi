@@ -1,38 +1,36 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FleetCard from '../components/FleetCard.astro';
 import { business, fleet } from '../data/business';
 ---
-<BaseLayout title={`Galeri 8 armada executive — ${business.name}`} description="Galeri armada Yossy Mandiri Jambi: Hiace Premio captain seat, Hiace Commuter, Innova Reborn, kabin hiburan TV karaoke, Fortuner. Geser untuk melihat semua unit." canonicalPath="/armada" image="/images/yossy-armada-6.jpg" breadcrumbs={[{ name: 'Armada', path: '/armada' }]}>
-  <section class="max-w-6xl mx-auto px-4 pt-12 w-full">
+<!-- Ref: Awwwards Fulidhoo Tours travel UI — detail unit minimal -->
+<BaseLayout title={`Detail 8 armada executive — ${business.name}`} description="Detail armada Yossy Mandiri Jambi: Hiace Premio captain seat, Hiace Commuter, Innova Reborn, kabin hiburan TV karaoke, executive via tol." canonicalPath="/armada" image="/images/yossy-armada-6.jpg" breadcrumbs={[{ name: 'Armada', path: '/armada' }]}>
+  <section class="max-w-7xl mx-auto px-4 pt-12 md:pt-20 w-full">
     <p class="text-xs font-semibold uppercase tracking-widest text-blue-900">Armada — 8 foto resmi</p>
-    <h1 class="mt-2 text-4xl md:text-6xl tracking-tight leading-none font-bold max-w-[22ch]">Geser, pilih kabin favoritmu</h1>
-    <p class="mt-4 text-base text-zinc-600 max-w-[65ch]">Foto asli dari situs resmi operator (Fortuner menyusul — konfirmasi unit via WA). Geser galeri ke samping; unit di tengah tampil penuh.</p>
+    <h1 class="mt-2 text-4xl md:text-6xl tracking-tight leading-none font-bold max-w-[22ch]">Kenal unitnya, nyaman jalannya</h1>
+    <p class="mt-4 text-base text-zinc-600 max-w-[65ch]">Foto asli dari situs resmi operator. Tiap unit: AC dingin, seat empuk, layanan via tol dengan antar-jemput hingga lokasi.</p>
   </section>
-  <section class="py-10 w-full">
-    <div class="coverflow flex gap-5 overflow-x-auto px-[8vw] pb-4">
-      {fleet.map((v, i) => (
-        <figure class="shrink-0 w-72 md:w-96" tabindex="0">
-          <img src={`/images/${v.img}`} alt={`${v.name} — armada PT Yossy Mandiri Travel`} width={v.w} height={v.h} loading={i < 2 ? 'eager' : 'lazy'} class="w-full h-72 md:h-96 object-cover rounded-[2rem] border border-blue-900/15" />
-          <figcaption class="mt-3 px-1">
-            <p class="font-mono-num text-xs text-blue-900 font-semibold">UNIT 0{i + 1}</p>
-            <p class="font-semibold text-lg tracking-tight">{v.name}</p>
-            <p class="mt-1 text-sm text-zinc-600">{v.desc}</p>
-          </figcaption>
-        </figure>
-      ))}
+  <section class="max-w-7xl mx-auto px-4 py-10 md:py-12 w-full">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {fleet.map((v, i) => (<FleetCard v={v} index={i} />))}
     </div>
-    <p class="max-w-6xl mx-auto px-4 mt-2 text-xs text-zinc-400">Sumber foto: yossymandiritravel.com (situs resmi). Tips: gunakan dua jari / shift + scroll untuk menggeser.</p>
+    <p class="mt-4 text-xs text-zinc-400">Sumber foto: yossymandiritravel.com (situs resmi).</p>
   </section>
-  <section class="max-w-6xl mx-auto px-4 pb-14 w-full">
+  <section class="max-w-7xl mx-auto px-4 pb-14 w-full">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
       <div class="md:col-span-8 bg-white border border-blue-900/15 rounded-[2rem] p-8">
         <h2 class="font-semibold text-lg tracking-tight">Fasilitas perjalanan</h2>
-        <p class="mt-2 text-sm text-zinc-600">AC, jok captain seat, TV + karaoke di unit Premio, layanan via tol, antar-jemput hingga lokasi.</p>
+        <ul class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-zinc-600 list-none">
+          <li class="border border-blue-900/10 rounded-2xl px-4 py-3">Jok captain seat kulit (Premio)</li>
+          <li class="border border-blue-900/10 rounded-2xl px-4 py-3">TV + karaoke unit hiburan</li>
+          <li class="border border-blue-900/10 rounded-2xl px-4 py-3">Executive class via tol</li>
+          <li class="border border-blue-900/10 rounded-2xl px-4 py-3">Antar-jemput hingga lokasi</li>
+        </ul>
       </div>
       <div class="md:col-span-4 bg-blue-900 text-white rounded-[2rem] p-8">
         <h2 class="font-semibold text-lg tracking-tight">Carter rombongan?</h2>
         <p class="mt-2 text-sm text-blue-100">Harga carter Hiace / Innova via loket Jambi.</p>
-        <a href="/pesan" class="mt-5 inline-block bg-white text-blue-900 px-6 py-3 rounded-full text-sm font-semibold transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Pesan kursi</a>
+        <a href="/pesan" class="mt-5 inline-flex items-center bg-white text-blue-900 px-6 py-3 rounded-full text-sm font-semibold min-h-[48px] transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Pesan kursi</a>
       </div>
     </div>
   </section>

@@ -51,9 +51,9 @@ export const fleet = [
   { name: 'Innova Reborn', desc: 'MPV nyaman untuk rute jauh dengan suspensi empuk.', img: 'yossy-armada-1.jpg', w: 900, h: 1200 },
   { name: 'Innova Reborn — unit 2', desc: 'Unit Innova cadangan untuk rute Jambi–Jakarta dan Jambi–Padang.', img: 'yossy-armada-3.jpg', w: 550, h: 1193 },
   { name: 'Kabin Hiburan', desc: 'Unit Premio dengan TV dan karaoke untuk mengusir bosan selama perjalanan jauh.', img: 'yossy-armada-5.jpg', w: 1093, h: 1103 },
-  { name: 'Armada Executive', desc: 'Unit executive class via tol, terawat dan bersih untuk rute Sumatera.', img: 'yossy-armada-4.jpg', w: 900, h: 900 },
+  { name: 'Armada Executive', desc: 'Unit executive class via tol, terawat dan bersih untuk rute Sumatera.', img: 'yossy-armada-4.jpg', w: 1071, h: 1082 },
   { name: 'Hiace Premio Silver', desc: 'Unit silver terparkir di depan loket Simpang Kawat Jambi.', img: 'yossy-armada-7.jpg', w: 648, h: 864 },
-  { name: 'Promo Rute', desc: 'Poster promosi rute Lampung–Bekasi (pp) dan rute Sumatera lainnya.', img: 'yossy-promo-1.jpg', w: 900, h: 900 },
+  { name: 'Promo Rute', desc: 'Poster promosi rute Lampung–Bekasi (pp) dan rute Sumatera lainnya.', img: 'yossy-promo-1.jpg', w: 1024, h: 1024 },
 ];
 
 export const faqs = [

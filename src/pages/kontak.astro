@@ -1,42 +1,47 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { business, faqs, notes } from '../data/business';
+import Faq from '../components/Faq.astro';
+import MapFacade from '../components/MapFacade.astro';
+import { business, faqs } from '../data/business';
+const extraFaqs = [
+  { q: 'Berapa bagasi yang boleh dibawa?', a: 'Ketentuan bagasi tidak dipublikasikan di situs resmi — tanyakan batas koper dan tarif over-bagasi via WA sebelum berangkat.' },
+  { q: 'Bagaimana refund jika batal berangkat?', a: 'Ketentuan refund tidak dipublikasikan — minta kebijakan pembatalan tertulis via WA sebelum membayar.' },
+  { q: 'Di mana titik jemput di Jambi?', a: 'Loket Simpang Kawat Jl. HOS. Cokroaminoto, plus antar-jemput hingga lokasi tujuan. Konfirmasi titik jemput saat booking.' },
+  { q: 'Apakah berangkat jika penumpang sedikit?', a: 'Jadwal keberangkatan harian mengikuti kuota kursi — konfirmasi H-1 via WA apakah kursi penuh atau dialihkan ke unit berikutnya.' },
+];
 ---
+<!-- Ref: Haramain agency — kontak loket multi-telp + jam + Maps + FAQ -->
 <BaseLayout title={`Kontak loket Simpang Kawat & FAQ — ${business.name}`} description="Kontak Yossy Mandiri loket Jambi Jl. HOS Cokroaminoto Simpang Kawat: WA 0821-8657-8514. FAQ jemput lokasi, via tol, refund, carter." canonicalPath="/kontak" image={business.ogImage} breadcrumbs={[{ name: 'Kontak', path: '/kontak' }]}>
-  <section class="max-w-6xl mx-auto px-4 pt-12 w-full">
+  <section class="max-w-7xl mx-auto px-4 pt-12 md:pt-20 w-full">
     <p class="text-xs font-semibold uppercase tracking-widest text-blue-900">Kontak</p>
     <h1 class="mt-2 text-4xl md:text-6xl tracking-tight leading-none font-bold max-w-[22ch]">Telepon loket, bukan calo</h1>
   </section>
-  <section class="max-w-6xl mx-auto px-4 py-10 w-full">
+  <section class="max-w-7xl mx-auto px-4 py-10 md:py-12 w-full">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
       <div class="md:col-span-4 reveal">
         <div class="bg-blue-900 text-white rounded-[2rem] p-8 h-full">
           <h2 class="font-semibold text-lg tracking-tight">Loket Jambi</h2>
           <p class="mt-2 text-sm text-blue-100">{business.address}</p>
-          <p class="mt-4 text-sm text-blue-100">{business.hours}</p>
-          <p class="mt-4 font-mono-num font-semibold text-lg">{business.phoneDisplay}</p>
-          {business.phoneAlt && <p class="mt-1 text-xs text-blue-200">{business.phoneAlt}</p>}
+          <p class="mt-4 text-sm"><span class="text-blue-200">Jam loket:</span> <span class="text-blue-50">{business.hours}</span></p>
+          <h3 class="mt-6 text-xs font-semibold uppercase tracking-widest text-blue-200">Multi-telp loket</h3>
+          <ul class="mt-2 space-y-2 list-none">
+            <li><a href="tel:+6282186578514" class="font-mono-num font-semibold text-lg underline underline-offset-4">{business.phoneDisplay}</a> <span class="text-xs text-blue-200">— utama</span></li>
+            <li><a href="tel:+6285219872450" class="font-mono-num font-semibold underline underline-offset-4">0852-1987-2450</a> <span class="text-xs text-blue-200">— alternatif</span></li>
+            <li><a href="tel:+6282378970577" class="font-mono-num font-semibold underline underline-offset-4">0823-7897-0577</a> <span class="text-xs text-blue-200">— alternatif</span></li>
+          </ul>
           <div class="mt-6 flex flex-col gap-3">
-            <a href={business.ctaUrl} target="_blank" rel="noopener" class="bg-white text-blue-900 text-center px-6 py-3 rounded-full text-sm font-semibold transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">{business.ctaLabel}</a>
-            <a href={business.mapsUrl} target="_blank" rel="noopener" class="border border-white/40 text-center px-6 py-3 rounded-full text-sm font-medium transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Buka Maps</a>
+            <a href={business.ctaUrl} target="_blank" rel="noopener" class="bg-white text-blue-900 text-center px-6 py-3 rounded-full text-sm font-semibold min-h-[48px] grid place-items-center transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">{business.ctaLabel}</a>
+            <a href={business.mapsUrl} target="_blank" rel="noopener" class="border border-white/40 text-center px-6 py-3 rounded-full text-sm font-medium min-h-[48px] grid place-items-center transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Buka Maps</a>
           </div>
         </div>
       </div>
       <div class="md:col-span-8 reveal reveal-d1">
-        <div class="bg-white border border-blue-900/15 rounded-[2rem] p-8">
-          <h2 class="font-semibold text-lg tracking-tight">Pertanyaan umum</h2>
-          <div class="mt-4 divide-y divide-blue-900/10">
-            {faqs.map((f) => (
-              <details class="py-4 group">
-                <summary class="font-medium cursor-pointer list-none flex justify-between items-center gap-4">{f.q}<span class="text-blue-900 group-open:rotate-45 transition text-xl leading-none">+</span></summary>
-                <p class="mt-2 text-sm text-zinc-600 leading-relaxed">{f.a}</p>
-              </details>
-            ))}
-          </div>
-          {notes.map((n) => (<p class="mt-4 text-sm text-zinc-500 border-l-2 border-blue-900 pl-3">{n}</p>))}
+        <div class="bg-white border border-blue-900/15 rounded-[2rem] px-6 md:px-8 py-4">
+          <h2 class="font-semibold text-lg tracking-tight pt-4">Pertanyaan umum</h2>
+          <Faq items={[...faqs, ...extraFaqs]} />
         </div>
-        <div class="mt-6 rounded-[2rem] overflow-hidden border border-blue-900/15 bg-zinc-100 h-[320px]">
-          <iframe title={`Peta ${business.name}`} src={business.mapsEmbed} loading="lazy" class="w-full h-full"></iframe>
+        <div class="mt-6">
+          <MapFacade src={business.mapsEmbed} title={`Peta ${business.name}`} address={business.address} mapsUrl={business.mapsUrl} />
         </div>
       </div>
     </div>

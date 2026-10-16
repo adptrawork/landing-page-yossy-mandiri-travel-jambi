@@ -1,0 +1,18 @@
+---
+const steps = [
+  { t: 'Pilih rute', d: 'Cek tabel rute populer, catat tujuan dan tanggal berangkatmu.' },
+  { t: 'Isi form', d: 'Lengkapi nama, no. WA, rute, tanggal, dan jumlah kursi di form pesan.' },
+  { t: 'Kirim via WA', d: 'Pesanan terkirim rapi ke WA loket — admin kunci kursi sebelum transfer.' },
+  { t: 'Tiba H−30 menit', d: 'Datang ke titik jemput 30 menit sebelum berangkat, bawa bukti bayar.' },
+];
+---
+<!-- Ref: Dribbble FlowLab Hajj&Umrah booking — booking flow jelas 4 langkah -->
+<ol class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 list-none">
+  {steps.map((s, i) => (
+    <li class="reveal bg-white border border-blue-900/15 rounded-[1.5rem] p-6 transition duration-300 hover:-translate-y-1 hover:border-blue-900/40">
+      <p class="font-mono-num text-sm font-semibold text-blue-900">0{i + 1}</p>
+      <h3 class="mt-2 font-bold tracking-tight">{s.t}</h3>
+      <p class="mt-1 text-sm text-zinc-600">{s.d}</p>
+    </li>
+  ))}
+</ol>

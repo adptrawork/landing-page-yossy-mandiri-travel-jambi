@@ -1,21 +1,35 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { business, routes, fleet } from '../data/business';
+import RouteCard from '../components/RouteCard.astro';
+import FleetCard from '../components/FleetCard.astro';
+import StepsPesan from '../components/StepsPesan.astro';
+import TrustBadges from '../components/TrustBadges.astro';
+import Faq from '../components/Faq.astro';
+import { business, routes, fleet, faqs } from '../data/business';
 const cta = `https://wa.me/${business.phone}?text=${encodeURIComponent('Halo, saya mau pesan kursi travel.')}`;
+const jamFor = (r: { status: string }) => (r.status.includes('Terverifikasi') ? 'Konfirmasi jam via WA' : 'Tanya jadwal via WA');
+const waFor = (name: string) => `https://wa.me/${business.phone}?text=${encodeURIComponent(`Halo, saya mau pesan kursi ${name}. Apakah tersedia?`)}`;
+const extraFaqs = [
+  { q: 'Berapa bagasi yang boleh dibawa?', a: 'Ketentuan bagasi tidak dipublikasikan di situs resmi — tanyakan batas koper dan tarif over-bagasi via WA sebelum berangkat.' },
+  { q: 'Bagaimana refund jika batal berangkat?', a: 'Ketentuan refund tidak dipublikasikan — minta kebijakan pembatalan tertulis via WA sebelum membayar.' },
+  { q: 'Di mana titik jemput di Jambi?', a: 'Loket Simpang Kawat Jl. HOS. Cokroaminoto, plus antar-jemput hingga lokasi tujuan. Konfirmasi titik jemput saat booking.' },
+  { q: 'Apakah berangkat jika penumpang sedikit?', a: 'Jadwal keberangkatan harian mengikuti kuota kursi — konfirmasi H-1 via WA apakah kursi penuh atau dialihkan ke unit berikutnya.' },
+];
 ---
 <BaseLayout title={business.title} description={business.description} canonicalPath={business.canonicalPath} image={business.ogImage}>
-  <!-- HERO SPLIT: kiri teks, kanan peta rute SVG line-drawing -->
-  <section class="max-w-6xl mx-auto px-4 w-full">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-10 md:py-14">
+  <!-- Ref: Dribbble FlowLab Hajj&Umrah booking — 01 Hero rute unggulan + jam + CTA Pesan Kursi -->
+  <section class="max-w-7xl mx-auto px-4 w-full">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center py-12 md:py-20">
       <div class="md:col-span-6 reveal">
         <p class="inline-flex items-center gap-2 text-xs font-semibold tracking-wide uppercase text-blue-900 bg-blue-900/5 border border-blue-900/15 rounded-full px-4 py-1.5">
           Executive tol Sumatera <span class="font-mono-num">{business.rating} / 5</span>
         </p>
         <h1 class="mt-4 text-4xl md:text-6xl tracking-tight leading-[1.02] font-bold">Jambi–Palembang–Jakarta via tol, duduk captain seat</h1>
         <p class="mt-5 text-base text-zinc-600 leading-relaxed max-w-[60ch]">Loket Simpang Kawat Jambi. Hiace Premio, Innova Reborn, dan Fortuner executive class via tol — antar-jemput hingga lokasi. Lampung–Jambi dan Palembang–Jambi Rp430rb.</p>
+        <p class="mt-3 font-mono-num text-sm font-semibold text-blue-900">Jam: konfirmasi via WA — loket buka setiap hari</p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a href={cta} target="_blank" rel="noopener" class="bg-blue-900 text-white px-7 py-3.5 rounded-full font-medium transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Pesan Kursi via WA</a>
-          <a href="/jadwal" class="border border-blue-900/30 text-blue-900 px-7 py-3.5 rounded-full font-medium transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Lihat Jadwal Tol</a>
+          <a href={cta} target="_blank" rel="noopener" class="bg-blue-900 text-white px-7 py-3.5 rounded-full font-medium min-h-[48px] inline-flex items-center transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Pesan Kursi via WA</a>
+          <a href="/jadwal" class="border border-blue-900/30 text-blue-900 px-7 py-3.5 rounded-full font-medium min-h-[48px] inline-flex items-center transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Lihat Jadwal Tol</a>
         </div>
         <dl class="mt-8 flex gap-8 border-t-2 border-blue-900/15 pt-5 text-sm max-w-[60ch]">
           <div><dt class="sr-only">Rute</dt><dd class="font-mono-num font-semibold text-lg">{routes.length}</dd><dd class="text-zinc-500">Rute aktif</dd></div>
@@ -26,7 +40,7 @@ const cta = `https://wa.me/${business.phone}?text=${encodeURIComponent('Halo, sa
       <div class="md:col-span-6 reveal reveal-d1">
         <div class="bg-white border border-blue-900/15 rounded-[2rem] p-6 md:p-8" role="img" aria-label="Peta rute executive via tol: Jambi, Palembang, Pekanbaru, Padang, Jakarta">
           <p class="text-xs font-semibold uppercase tracking-widest text-blue-900">Peta rute via tol</p>
-          <svg viewBox="0 0 400 300" class="mt-3 w-full h-auto" fill="none" aria-hidden="true">
+          <svg viewBox="0 0 400 300" class="mt-3 w-full max-w-full h-auto" fill="none" aria-hidden="true">
             <path d="M40 40 H360 M40 40 V260 M40 260 H360 M360 40 V260" stroke="#dbe3f5" stroke-width="1.5" stroke-dasharray="5 6" />
             <path class="route-draw" d="M200 250 C 190 210, 150 200, 140 160 C 130 115, 170 100, 175 70" stroke="#1e3a8a" stroke-width="3" stroke-linecap="round" />
             <path class="route-draw-2" d="M200 250 C 230 220, 260 215, 280 180 C 300 145, 290 110, 310 80" stroke="#1e3a8a" stroke-width="2" stroke-dasharray="1 0" opacity="0.55" />
@@ -45,62 +59,89 @@ const cta = `https://wa.me/${business.phone}?text=${encodeURIComponent('Halo, sa
     </div>
   </section>
 
-  <!-- STRIP RUTE (bukan kartu 3-col): daftar horizontal -->
-  <section class="max-w-6xl mx-auto px-4 py-8 w-full">
+  <!-- Ref: Shakuro Umrah&Hajj tour — 02 Rute populer: tabel desktop / cards mobile -->
+  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20 w-full">
     <div class="flex items-end justify-between gap-4">
-      <h2 class="text-2xl md:text-3xl tracking-tight font-bold">Koridor yang lewat tol</h2>
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-blue-900">02 — Rute populer</p>
+        <h2 class="mt-2 text-2xl md:text-3xl tracking-tight font-bold">Koridor yang lewat tol</h2>
+      </div>
       <a href="/jadwal" class="text-sm font-medium text-blue-900 underline underline-offset-4 shrink-0">Semua tarif</a>
     </div>
-    <ol class="mt-5 divide-y divide-blue-900/10 border-y-2 border-blue-900/15">
-      {routes.slice(0, 5).map((r, i) => (
-        <li class="reveal flex items-center gap-4 py-3.5">
-          <span class="font-mono-num text-xs text-blue-900 font-semibold w-8">0{i + 1}</span>
-          <p class="font-semibold flex-1">{r.name}</p>
-          <p class="font-mono-num text-sm font-semibold text-blue-900">{r.price}</p>
-        </li>
-      ))}
-    </ol>
-  </section>
-
-  <!-- COVERFLOW TEASER -->
-  <section class="py-10 w-full">
-    <div class="max-w-6xl mx-auto px-4 flex items-end justify-between gap-4">
-      <h2 class="text-2xl md:text-3xl tracking-tight font-bold">Lihat kabinnya dulu</h2>
-      <a href="/armada" class="text-sm font-medium text-blue-900 underline underline-offset-4 shrink-0">Buka galeri 8 armada</a>
+    <div class="mt-6 hidden md:block bg-white border border-blue-900/15 rounded-[2rem] overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-blue-900 text-white">
+          <tr class="text-left"><th scope="col" class="py-3.5 px-5 font-semibold">Rute</th><th scope="col" class="py-3.5 px-5 font-semibold">Jam</th><th scope="col" class="py-3.5 px-5 font-semibold">Harga</th><th scope="col" class="py-3.5 px-5 font-semibold">Status</th><th scope="col" class="py-3.5 px-5 font-semibold"><span class="sr-only">Aksi</span></th></tr>
+        </thead>
+        <tbody class="divide-y divide-blue-900/10">
+          {routes.slice(0, 5).map((r, i) => (
+            <tr class:list={['transition hover:bg-blue-900/5', i % 2 === 1 && 'bg-slate-100/80']}>
+              <td class="py-4 px-5 font-semibold">{r.name}</td>
+              <td class="py-4 px-5 font-mono-num text-sm whitespace-nowrap">{jamFor(r)}</td>
+              <td class="py-4 px-5 font-mono-num font-semibold whitespace-nowrap text-blue-900">{r.price}</td>
+              <td class="py-4 px-5"><span class={`text-xs font-medium px-3 py-1.5 rounded-full whitespace-nowrap ${r.status.includes('Terverifikasi') ? 'bg-blue-900 text-white' : 'bg-amber-100 text-amber-800'}`}>{r.status}</span></td>
+              <td class="py-4 px-5 text-right"><a href={waFor(r.name)} target="_blank" rel="noopener" class="inline-block bg-blue-900 text-white px-5 py-2 rounded-full text-xs font-semibold whitespace-nowrap">Pesan</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
-    <div class="coverflow mt-6 flex gap-5 overflow-x-auto px-[8vw] pb-2">
-      {fleet.slice(0, 6).map((v) => (
-        <figure class="shrink-0 w-64 md:w-80">
-          <img src={`/images/${v.img}`} alt={v.name} width={v.w} height={v.h} loading="lazy" class="w-full h-64 object-cover rounded-[1.75rem] border border-blue-900/15" />
-          <figcaption class="mt-2 text-sm font-semibold">{v.name}</figcaption>
-        </figure>
-      ))}
+    <div class="mt-6 grid grid-cols-1 gap-4 md:hidden">
+      {routes.slice(0, 5).map((r, i) => (<RouteCard r={r} jam={jamFor(r)} wa={waFor(r.name)} index={i} />))}
     </div>
   </section>
 
-  <section class="max-w-6xl mx-auto px-4 py-12 w-full">
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+  <!-- Ref: Awwwards Fulidhoo Tours travel UI — 03 Armada foto + seat/AC/plus -->
+  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20 w-full">
+    <div class="flex items-end justify-between gap-4">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-widest text-blue-900">03 — Armada</p>
+        <h2 class="mt-2 text-2xl md:text-3xl tracking-tight font-bold">Lihat kabinnya dulu</h2>
+      </div>
+      <a href="/armada" class="text-sm font-medium text-blue-900 underline underline-offset-4 shrink-0">Galeri 8 armada</a>
+    </div>
+    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {fleet.slice(0, 3).map((v, i) => (<FleetCard v={v} index={i} />))}
+    </div>
+  </section>
+
+  <!-- Ref: FlowLab booking — 04 Cara pesan 4 langkah + form ringkas -->
+  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20 w-full">
+    <p class="text-xs font-semibold uppercase tracking-widest text-blue-900">04 — Cara pesan</p>
+    <h2 class="mt-2 text-2xl md:text-3xl tracking-tight font-bold">Pilih → Isi form → WA → Tiba H−30 menit</h2>
+    <div class="mt-6"><StepsPesan /></div>
+    <div class="mt-6 text-center">
+      <a href="/pesan" class="inline-flex items-center bg-blue-900 text-white px-8 py-3.5 rounded-full font-medium min-h-[48px] transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Isi form pesan kursi</a>
+    </div>
+  </section>
+
+  <!-- Ref: Haramain agency — 05 FAQ + Kontak loket -->
+  <section class="max-w-7xl mx-auto px-4 py-12 md:py-20 w-full">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
       <div class="md:col-span-7">
-        <h2 class="text-2xl md:text-3xl tracking-tight font-bold">Rating <span class="font-mono-num">{business.rating}</span> — {business.name}</h2>
-        <p class="mt-3 text-base text-zinc-600">{business.address}. <a class="underline underline-offset-4 text-blue-900" href={business.mapsUrl} target="_blank" rel="noopener">Lihat di Google Maps</a></p>
+        <p class="text-xs font-semibold uppercase tracking-widest text-blue-900">05 — FAQ</p>
+        <h2 class="mt-2 text-2xl md:text-3xl tracking-tight font-bold">Sering ditanyakan</h2>
+        <div class="mt-4 bg-white border border-blue-900/15 rounded-[2rem] px-6 md:px-8">
+          <Faq items={[...faqs, ...extraFaqs]} />
+        </div>
       </div>
       <div class="md:col-span-5">
-        <div class="rounded-[2rem] overflow-hidden border border-blue-900/15 aspect-video bg-zinc-100">
-          <iframe title={`Peta ${business.name}`} src={business.mapsEmbed} loading="lazy" class="w-full h-full"></iframe>
+        <p class="text-xs font-semibold uppercase tracking-widest text-blue-900">Kontak loket</p>
+        <h2 class="mt-2 text-2xl md:text-3xl tracking-tight font-bold">Telepon loket, bukan calo</h2>
+        <div class="mt-4 bg-blue-900 text-white rounded-[2rem] p-8">
+          <p class="text-sm text-blue-100">{business.address}</p>
+          <p class="mt-2 text-sm text-blue-100">{business.hours}</p>
+          <p class="mt-4 font-mono-num font-semibold text-lg">{business.phoneDisplay}</p>
+          {business.phoneAlt && <p class="mt-1 text-xs text-blue-200">{business.phoneAlt}</p>}
+          <div class="mt-6 flex flex-col gap-3">
+            <a href={cta} target="_blank" rel="noopener" class="bg-white text-blue-900 text-center px-6 py-3 rounded-full text-sm font-semibold min-h-[48px] grid place-items-center transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">{business.ctaLabel}</a>
+            <a href={business.mapsUrl} target="_blank" rel="noopener" class="border border-white/40 text-center px-6 py-3 rounded-full text-sm font-medium min-h-[48px] grid place-items-center transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Buka Maps</a>
+          </div>
         </div>
       </div>
     </div>
-  </section>
-
-  <section class="max-w-6xl mx-auto px-4 py-14 w-full">
-    <div class="bg-blue-900 text-white rounded-[2rem] p-8 md:p-12 md:grid md:grid-cols-12 md:gap-8 md:items-center">
-      <div class="md:col-span-8">
-        <h2 class="text-2xl md:text-3xl tracking-tight font-bold">Kursi Premio habis tiap akhir pekan</h2>
-        <p class="mt-2 text-sm text-blue-100">Kirim rute + tanggal via WA, admin kunci kursi sebelum transfer.</p>
-      </div>
-      <div class="md:col-span-4 mt-6 md:mt-0 md:text-right">
-        <a href={cta} target="_blank" rel="noopener" class="inline-block bg-white text-blue-900 px-8 py-3.5 rounded-full font-semibold transition duration-300 hover:-translate-y-0.5 active:scale-[0.97]">Pesan Kursi via WA</a>
-      </div>
+    <div class="mt-10">
+      <TrustBadges />
     </div>
   </section>
 </BaseLayout>

@@ -1,0 +1,17 @@
+---
+const badges = [
+  { t: 'Executive via tol', d: 'Koridor tol Sumatera' },
+  { t: 'Antar-jemput lokasi', d: 'Driver jemput hingga tujuan' },
+  { t: 'Tarif terverifikasi', d: 'Rp430rb situs resmi' },
+  { t: 'Rating 4.1/5', d: '70 ulasan penumpang' },
+];
+---
+<!-- Ref: Shakuro Umrah&Hajj tour — trust badges row -->
+<ul class="grid grid-cols-2 lg:grid-cols-4 gap-4 list-none">
+  {badges.map((b) => (
+    <li class="bg-white border border-blue-900/15 rounded-[1.5rem] p-5 text-center">
+      <p class="font-bold tracking-tight text-sm">{b.t}</p>
+      <p class="mt-1 text-xs text-zinc-500">{b.d}</p>
+    </li>
+  ))}
+</ul>
