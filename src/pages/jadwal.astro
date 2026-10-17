@@ -23,9 +23,9 @@ const badgeCls = (s: string) =>
     <p id="jadwal-empty" class="hidden text-sm text-zinc-500 bg-white border border-blue-900/15 rounded-[1.5rem] p-6">Tidak ada rute yang cocok — coba kata kunci lain atau <a class="underline text-blue-900" href="/pesan">tanya via WA</a>.</p>
     <!-- Desktop: tabel + sticky kolom pertama + hint scroll -->
     <div id="jadwal-table-wrap" class="hidden">
-      <p class="md:hidden text-xs text-zinc-500 mb-2">← Geser tabel ke samping — kolom rute menempel</p>
+      <p class="md:hidden text-xs text-zinc-600 mb-2">← Geser tabel ke samping — kolom rute menempel</p>
       <div class="hidden md:block bg-white border border-blue-900/15 rounded-[2rem] overflow-hidden">
-        <div class="scroll-hint overflow-x-auto max-h-[70dvh] overflow-y-auto">
+        <div class="scroll-hint overflow-x-auto max-h-[70dvh] overflow-y-auto" tabindex="0" role="region" aria-label="Tabel jadwal dan tarif rute">
           <table class="w-full text-sm min-w-[720px]">
             <thead class="sticky top-0 z-10 bg-blue-900 text-white">
               <tr class="text-left">

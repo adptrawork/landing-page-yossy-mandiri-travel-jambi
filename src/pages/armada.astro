@@ -12,9 +12,9 @@ import { business, fleet } from '../data/business';
   </section>
   <section class="max-w-7xl mx-auto px-4 py-10 md:py-12 w-full">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      {fleet.map((v, i) => (<FleetCard v={v} index={i} />))}
+      {fleet.map((v, i) => (<FleetCard v={v} index={i} eager />))}
     </div>
-    <p class="mt-4 text-xs text-zinc-400">Sumber foto: yossymandiritravel.com (situs resmi).</p>
+    <p class="mt-4 text-xs text-zinc-600">Sumber foto: yossymandiritravel.com (situs resmi).</p>
   </section>
   <section class="max-w-7xl mx-auto px-4 pb-14 w-full">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6">

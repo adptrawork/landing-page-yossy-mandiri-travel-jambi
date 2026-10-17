@@ -7,4 +7,8 @@ export default defineConfig({
   site: 'https://yossy-travel-jambi.pages.dev',
   output: 'static',
   integrations: [tailwind(), sitemap()],
+  build: {
+    // CSS kritis di-inline ke HTML: 1 request lebih sedikit, FCP/SI lebih cepat (tanpa render-blocking terpisah)
+    inlineStylesheets: 'always',
+  },
 });

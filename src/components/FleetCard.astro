@@ -1,11 +1,11 @@
 ---
 interface V { name: string; desc: string; img: string; w: number; h: number }
-interface Props { v: V; index: number }
-const { v, index } = Astro.props;
+interface Props { v: V; index: number; eager?: boolean }
+const { v, index, eager = false } = Astro.props;
 ---
 <!-- Ref: Awwwards Fulidhoo Tours travel UI — minimal layout, foto + seat info -->
 <figure class="bg-white border border-blue-900/15 rounded-[1.75rem] overflow-hidden transition duration-300 hover:-translate-y-1 hover:border-blue-900/40 hover:shadow-lg hover:shadow-blue-900/10">
-  <img src={`/images/${v.img}`} alt={`${v.name} — armada PT Yossy Mandiri Travel`} width={v.w} height={v.h} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" fetchpriority={index === 0 ? 'high' : 'auto'} class="w-full h-60 object-cover" />
+  <img src={`/images/${v.img}`} alt={`${v.name} — armada PT Yossy Mandiri Travel`} width={v.w} height={v.h} loading={eager ? (index < 2 ? 'eager' : 'lazy') : 'lazy'} decoding="async" fetchpriority={eager && index === 0 ? 'high' : 'auto'} class="w-full h-60 object-cover" />
   <figcaption class="p-6">
     <p class="font-mono-num text-xs text-blue-900 font-semibold">UNIT 0{index + 1}</p>
     <p class="mt-1 font-bold text-lg tracking-tight">{v.name}</p>
